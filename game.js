@@ -2028,6 +2028,21 @@ function setupUITooltips() {
 // Call setup
 setupUITooltips();
 
+container.addEventListener("wheel", (e) => {
+    e.preventDefault();
+
+    // Zoom sensitivity
+    const zoomSpeed = 0.001;
+
+    // Adjust zoom level
+    camera.zoom += -e.deltaY * zoomSpeed;
+
+    // Clamp zoom limits
+    camera.zoom = Math.min(Math.max(camera.zoom, 0.5), 3.0);
+
+    camera.updateProjectionMatrix();
+}, { passive: false });
+
 container.addEventListener("mouseup", (e) => {
     if (e.button === 2 || e.button === 1) {
         isPanning = false;

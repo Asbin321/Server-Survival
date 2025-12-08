@@ -15,14 +15,20 @@
   <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
     <!-- Stats Panel (Top Left) -->
     <div id="statsPanel" class="absolute top-4 left-4 glass-panel rounded-xl p-5 w-80 pointer-events-auto">
-      <div class="flex justify-between items-end mb-3 border-b border-gray-700 pb-2">
-        <h1 class="text-2xl font-bold text-red-500 tracking-widest animate-pulse">
-          SURVIVAL
-        </h1>
-        <span class="text-xs text-gray-500 font-mono">v2.1</span>
+      <div class="flex justify-between items-center mb-3 border-b border-gray-700 pb-2">
+        <div class="flex items-end gap-2">
+          <h1 class="text-2xl font-bold text-red-500 tracking-widest animate-pulse">
+            SURVIVAL
+          </h1>
+          <span class="text-xs text-gray-500 font-mono">v2.1</span>
+        </div>
+        <button onclick="togglePanel('stats-content', 'stats-panel-icon')"
+          class="w-6 h-6 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded border border-gray-600 text-gray-400 transition">
+          <span id="stats-panel-icon" class="text-[10px]">▲</span>
+        </button>
       </div>
 
-      <div class="space-y-2">
+      <div id="stats-content" class="space-y-2">
         <div class="flex justify-between items-center">
           <span class="text-gray-400 text-sm">BUDGET</span>
           <span id="money-display"
@@ -136,10 +142,16 @@
     <div class="absolute top-4 right-4 flex flex-col gap-3 items-end pointer-events-none">
       <!-- Score Details Panel (Top Right) -->
       <div id="detailsPanel" class="glass-panel rounded-xl p-4 w-60 pointer-events-auto">
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 border-b border-gray-700 pb-1">
-          Traffic Score Details
-        </h3>
-        <div class="space-y-1 text-sm font-mono">
+        <div class="flex justify-between items-center mb-2 border-b border-gray-700 pb-1">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">
+            Traffic Score Details
+          </h3>
+          <button onclick="togglePanel('details-content', 'details-panel-icon')"
+            class="w-6 h-6 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded border border-gray-600 text-gray-400 transition">
+            <span id="details-panel-icon" class="text-[10px]">▲</span>
+          </button>
+        </div>
+        <div id="details-content" class="space-y-1 text-sm font-mono">
           <div class="flex justify-between items-center">
             <span class="text-gray-500">Storage (S3)</span>
             <span id="score-storage" class="text-emerald-300">0</span>
@@ -441,10 +453,16 @@
         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">
           Current Objectives
         </h3>
-        <span
-          class="text-[10px] bg-red-900/50 px-2 py-0.5 rounded text-red-400 border border-red-800 animate-pulse">LIVE</span>
+        <div class="flex items-center gap-2">
+          <span
+            class="text-[10px] bg-red-900/50 px-2 py-0.5 rounded text-red-400 border border-red-800 animate-pulse">LIVE</span>
+          <button onclick="togglePanel('objectives-content', 'objectives-panel-icon')"
+            class="w-6 h-6 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded border border-gray-600 text-gray-400 transition">
+            <span id="objectives-panel-icon" class="text-[10px]">▲</span>
+          </button>
+        </div>
       </div>
-      <ul class="text-xs text-gray-300 space-y-2 font-mono">
+      <ul id="objectives-content" class="text-xs text-gray-300 space-y-2 font-mono">
         <li class="flex items-center">
           <span class="w-2 h-2 rounded-full bg-red-500 mr-2 animate-pulse"></span>
           Survive Endless Traffic
