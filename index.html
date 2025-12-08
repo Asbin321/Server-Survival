@@ -625,6 +625,45 @@
           <div class="w-4 h-4 bg-emerald-500 rounded-full mb-1 shadow-[0_0_10px_rgba(16,185,129,0.6)]"></div>
           <span class="text-[10px] font-bold mt-1">Storage</span>
         </button>
+
+        <!-- CDN -->
+        <button id="tool-cdn"
+          class="service-btn bg-gray-800 text-gray-200 p-2 rounded-lg w-16 h-16 flex flex-col items-center justify-center border border-transparent group relative overflow-hidden"
+          onclick="setTool('cdn')">
+          <div class="absolute top-0 right-0 bg-green-900/80 text-green-400 text-[9px] px-1 rounded-bl font-mono">
+            $90
+          </div>
+          <div
+            class="w-4 h-4 bg-teal-500 rounded-full mb-1 shadow-[0_0_10px_rgba(20,184,166,0.6)] border-2 border-white">
+          </div>
+          <span class="text-[10px] font-bold mt-1">CDN</span>
+        </button>
+
+        <!-- Firewall Adv -->
+        <button id="tool-firewall_adv"
+          class="service-btn bg-gray-800 text-gray-200 p-2 rounded-lg w-16 h-16 flex flex-col items-center justify-center border border-transparent group relative overflow-hidden"
+          onclick="setTool('firewall_adv')">
+          <div class="absolute top-0 right-0 bg-green-900/80 text-green-400 text-[9px] px-1 rounded-bl font-mono">
+            $120
+          </div>
+          <div
+            class="w-4 h-4 bg-purple-700 rounded-sm mb-1 shadow-[0_0_10px_rgba(126,34,206,0.6)] border border-purple-400">
+          </div>
+          <span class="text-[10px] font-bold mt-1">NGFW</span>
+        </button>
+      </div>
+
+      <!-- Expansion Controls -->
+      <div class="flex gap-2 pl-2 border-l border-gray-700 ml-2">
+        <button id="tool-expand"
+          class="service-btn bg-indigo-900/40 text-indigo-300 p-2 rounded-lg w-16 h-16 flex flex-col items-center justify-center border border-indigo-500/30 hover:bg-indigo-900/60"
+          onclick="purchaseExpansion()">
+          <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+          </svg>
+          <span class="text-[9px] font-bold mt-1 text-center leading-tight">EXPAND<br>GRID</span>
+        </button>
       </div>
     </div>
   </div>

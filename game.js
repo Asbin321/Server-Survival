@@ -1686,9 +1686,11 @@ window.toggleMute = () => {
 
 container.addEventListener("contextmenu", (e) => e.preventDefault());
 
+// Mouse down handler for panning and tool initiation
 container.addEventListener("mousedown", (e) => {
     if (!STATE.isRunning) return;
 
+    // Right Click or Middle Click -> Pan
     if (e.button === 2 || e.button === 1) {
         isPanning = true;
         lastMouseX = e.clientX;
@@ -1698,90 +1700,99 @@ container.addEventListener("mousedown", (e) => {
         return;
     }
 
-    const i = getIntersect(e.clientX, e.clientY);
-    if (STATE.activeTool === "select") {
+    // Left Click -> Select / Tool Action
+    if (e.button === 0) {
         const i = getIntersect(e.clientX, e.clientY);
-        if (i.type === "service") {
-            const svc = STATE.services.find((s) => s.id === i.id);
-            // Check if service needs repair (double-click logic could be added)
-            if (svc && svc.health < 80 && CONFIG.survival.degradation?.enabled) {
-                // Repair on click when damaged
-                if (svc.repair()) {
-                    addInterventionWarning(
-                        `🔧 ${svc.type.toUpperCase()} repaired!`,
-                        "info",
-                        2000
-                    );
-                    return;
+
+        // Handle Select / Drag
+        if (STATE.activeTool === "select") {
+            if (i.type === "service") {
+                const svc = STATE.services.find((s) => s.id === i.id);
+                // Repair check
+                if (svc && svc.health < 80 && CONFIG.survival.degradation?.enabled) {
+                    if (svc.repair()) {
+                        addInterventionWarning(`🔧 ${svc.type.toUpperCase()} repaired!`, "info", 2000);
+                        return;
+                    }
                 }
-            }
-            draggedNode = svc;
-        } else if (i.type === "internet") {
-            draggedNode = STATE.internetNode;
-        }
-        if (draggedNode) {
-            isDraggingNode = true;
-            const hit = getIntersect(e.clientX, e.clientY);
-            if (hit.pos) {
-                dragOffset.copy(draggedNode.position).sub(hit.pos);
-            }
-            container.style.cursor = "grabbing";
-            e.preventDefault();
-            return;
-        }
-    } else if (STATE.activeTool === "delete" && i.type === "service")
-        deleteObject(i.id);
-    else if (STATE.activeTool === "unlink") {
-        const conn = getConnectionAtPoint(e.clientX, e.clientY);
-        if (conn) {
-            deleteConnection(conn.from, conn.to);
-        } else {
-            new Audio("assets/sounds/click-9.mp3").play();
-        }
-    } else if (
-        STATE.activeTool === "connect" &&
-        (i.type === "service" || i.type === "internet")
-    ) {
-        if (STATE.selectedNodeId) {
-            createConnection(STATE.selectedNodeId, i.id);
-            STATE.selectedNodeId = null;
-        } else {
-            STATE.selectedNodeId = i.id;
-            new Audio("assets/sounds/click-5.mp3").play();
-        }
-    } else if (
-        ["waf", "alb", "lambda", "db", "s3", "sqs", "cache"].includes(
-            STATE.activeTool
-        )
-    ) {
-        // Handle upgrades for compute, db, and cache
-        if (
-            (STATE.activeTool === "lambda" && i.type === "service") ||
-            (STATE.activeTool === "db" && i.type === "service") ||
-            (STATE.activeTool === "cache" && i.type === "service")
-        ) {
-            const svc = STATE.services.find((s) => s.id === i.id);
-            if (
-                svc &&
-                ((STATE.activeTool === "lambda" && svc.type === "compute") ||
-                    (STATE.activeTool === "db" && svc.type === "db") ||
-                    (STATE.activeTool === "cache" && svc.type === "cache"))
-            ) {
-                svc.upgrade();
+                draggedNode = svc;
+                isDraggingNode = true;
+
+                // Set offset for smooth dragging
+                if (i.pos) {
+                    dragOffset.copy(draggedNode.position).sub(i.pos);
+                }
+
+                container.style.cursor = "grabbing";
+                return; // Stop processing other tools
+            } else if (i.type === "internet") {
+                draggedNode = STATE.internetNode;
+                isDraggingNode = true;
+                if (i.pos) {
+                    dragOffset.copy(draggedNode.position).sub(i.pos);
+                }
+                container.style.cursor = "grabbing";
                 return;
             }
         }
-        if (i.type === "ground") {
-            const typeMap = {
-                waf: "waf",
-                alb: "alb",
-                lambda: "compute",
-                db: "db",
-                s3: "s3",
-                sqs: "sqs",
-                cache: "cache",
-            };
-            createService(typeMap[STATE.activeTool], snapToGrid(i.pos));
+
+        if (STATE.activeTool === "delete" && i.type === "service") {
+            deleteObject(i.id);
+        } else if (STATE.activeTool === "unlink") {
+            const conn = getConnectionAtPoint(e.clientX, e.clientY);
+            if (conn) {
+                deleteConnection(conn.from, conn.to);
+            } else {
+                new Audio("assets/sounds/click-9.mp3").play();
+            }
+        } else if (
+            STATE.activeTool === "connect" &&
+            (i.type === "service" || i.type === "internet")
+        ) {
+            if (STATE.selectedNodeId) {
+                createConnection(STATE.selectedNodeId, i.id);
+                STATE.selectedNodeId = null;
+            } else {
+                STATE.selectedNodeId = i.id;
+                new Audio("assets/sounds/click-5.mp3").play();
+            }
+            // ... (previous tool logic)
+        } else if (
+            ["waf", "alb", "lambda", "db", "s3", "sqs", "cache", "cdn", "firewall_adv"].includes(
+                STATE.activeTool
+            )
+        ) {
+            // Handle upgrades for compute, db, and cache
+            if (
+                (STATE.activeTool === "lambda" && i.type === "service") ||
+                (STATE.activeTool === "db" && i.type === "service") ||
+                (STATE.activeTool === "cache" && i.type === "service")
+            ) {
+                const svc = STATE.services.find((s) => s.id === i.id);
+                if (
+                    svc &&
+                    ((STATE.activeTool === "lambda" && svc.type === "compute") ||
+                        (STATE.activeTool === "db" && svc.type === "db") ||
+                        (STATE.activeTool === "cache" && svc.type === "cache"))
+                ) {
+                    svc.upgrade();
+                    return;
+                }
+            }
+            if (i.type === "ground") {
+                const typeMap = {
+                    waf: "waf",
+                    alb: "alb",
+                    lambda: "compute",
+                    db: "db",
+                    s3: "s3",
+                    sqs: "sqs",
+                    cache: "cache",
+                    cdn: "cdn",
+                    firewall_adv: "firewall_adv",
+                };
+                createService(typeMap[STATE.activeTool], snapToGrid(i.pos));
+            }
         }
     }
 });
@@ -1997,7 +2008,7 @@ function showTooltip(x, y, html) {
 
 // Setup UI tooltips
 function setupUITooltips() {
-    const tools = ["waf", "sqs", "alb", "lambda", "db", "cache", "s3"];
+    const tools = ["waf", "sqs", "alb", "lambda", "db", "cache", "s3", "cdn", "firewall_adv"];
     tools.forEach((toolId) => {
         const btn = document.getElementById(`tool-${toolId}`);
         if (!btn) return;
@@ -2044,11 +2055,15 @@ container.addEventListener("wheel", (e) => {
 }, { passive: false });
 
 container.addEventListener("mouseup", (e) => {
+    // Stop Panning
     if (e.button === 2 || e.button === 1) {
         isPanning = false;
         container.style.cursor = "default";
     }
-    if (isDraggingNode && draggedNode) {
+
+    // Stop Dragging
+    if (e.button === 0 && isDraggingNode && draggedNode) {
+        isDraggingNode = false;
         isDraggingNode = false;
 
         const snapped = snapToGrid(draggedNode.position);
@@ -2491,7 +2506,61 @@ document.addEventListener("keydown", (event) => {
     if (event.key === "T" || event.key === "t") {
         toggleView();
     }
+    if (event.key === "E" || event.key === "e") {
+        purchaseExpansion();
+    }
 });
+
+function purchaseExpansion() {
+    // Current grid size is stored in CONFIG.gridSize (initially 20)
+    // We'll track expansions in STATE
+    STATE.expansions = STATE.expansions || 0;
+
+    const cost = Math.floor(CONFIG.expansion.baseCost * Math.pow(CONFIG.expansion.costMultiplier, STATE.expansions));
+
+    if (STATE.money < cost) {
+        addInterventionWarning(`💸 Need $${cost} to expand!`, "warning", 2000);
+        flashMoney();
+        return;
+    }
+
+    STATE.money -= cost;
+    STATE.expansions++;
+
+    CONFIG.gridSize += 10; // Expand by 10 tiles
+
+    // Recreate Grid
+    scene.remove(scene.getObjectByName("gridHelper"));
+    // Actually we stored gridHelper in a const not accessible here globally easily unless we look at init lines.
+    // Let's assume we can remove it from scene.children or we made it global.
+    // Warning: 'gridHelper' variable from line 818 is local to that block if it was top level... 
+    // Wait, line 818 `const gridHelper` is likely at top level or inside init. 
+    // Based on earlier view, it seemed top level. Let's check. 
+    // It was top level. But wait, `const gridHelper` means I can't reassign it.
+    // I need to handle this carefully. I'll just remove the old arrow/plane and add new ones.
+
+    // For now, simpler: Just update the ground plane scale and visual grid
+    const oldGrid = scene.children.find(c => c.type === "GridHelper");
+    if (oldGrid) scene.remove(oldGrid);
+
+    const newGrid = new THREE.GridHelper(
+        CONFIG.gridSize * CONFIG.tileSize,
+        CONFIG.gridSize,
+        CONFIG.colors.grid,
+        CONFIG.colors.grid
+    );
+    scene.add(newGrid);
+
+    // Update Plane for Raycasting
+    plane.geometry.dispose();
+    plane.geometry = new THREE.PlaneGeometry(
+        CONFIG.gridSize * CONFIG.tileSize,
+        CONFIG.gridSize * CONFIG.tileSize
+    );
+
+    addInterventionWarning(`🏗️ AREA EXPANDED!`, "info", 3000);
+    STATE.sound.playPlace(); // Reuse place sound
+}
 
 function toggleView() {
     isIsometric = !isIsometric;
