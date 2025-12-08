@@ -124,10 +124,10 @@ function showMaliciousWarning() {
     const warning = document.createElement("div");
     warning.id = "malicious-warning";
     warning.className =
-        "fixed top-24 left-1/2 transform -translate-x-1/2 text-center z-50 pointer-events-none";
+        "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-50 pointer-events-none";
     warning.innerHTML = `
-        <div class="text-red-500 text-2xl font-bold animate-pulse">⚠️ DDoS INCOMING ⚠️</div>
-        <div class="text-red-300 text-sm">Attack spike in 5 seconds!</div>
+        <div class="text-red-500 text-6xl font-black animate-pulse filter drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]">⚠️ DDoS INCOMING ⚠️</div>
+        <div class="text-white text-2xl font-bold mt-2 text-shadow">Attack spike in 5 seconds!</div>
     `;
     document.body.appendChild(warning);
 
@@ -167,7 +167,7 @@ function startMaliciousSpike() {
     const indicator = document.createElement("div");
     indicator.id = "malicious-spike-indicator";
     indicator.className =
-        "fixed top-4 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none";
+        "fixed top-32 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none";
     indicator.innerHTML = `
         <div class="bg-red-900/80 border-2 border-red-500 rounded-lg px-4 py-2 animate-pulse">
             <span class="text-red-400 font-bold">🔥 DDoS ATTACK ACTIVE 🔥</span>
