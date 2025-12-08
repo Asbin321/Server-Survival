@@ -23,6 +23,8 @@ const CONFIG = {
     requestFail: 0xef4444,
     cache: 0xdc382d, // Redis red
     sqs: 0xff9900, // AWS orange
+    cdn: 0x0ea5e9, // Sky blue
+    firewall_adv: 0x7e22ce, // Deep purple
   },
   trafficTypes: {
     STATIC: {
@@ -193,6 +195,30 @@ const CONFIG = {
       tooltip: {
         upkeep: "Low",
         desc: "<b>Queue.</b> Buffers requests during spikes. Prevents drops.",
+      },
+    },
+    cdn: {
+      name: "CDN Endpoint",
+      cost: 80,
+      type: "cdn",
+      processingTime: 30,
+      capacity: 50,
+      upkeep: 15,
+      tooltip: {
+        upkeep: "Medium",
+        desc: "<b>CDN.</b> Serves static content globally. High capacity for STATIC/UPLOAD.",
+      },
+    },
+    firewall_adv: {
+      name: "Next-Gen Firewall",
+      cost: 120,
+      type: "firewall_adv",
+      processingTime: 40,
+      capacity: 40,
+      upkeep: 18,
+      tooltip: {
+        upkeep: "High",
+        desc: "<b>Deep Packet Inspection.</b> Blocks sophisticated attacks.",
       },
     },
   },

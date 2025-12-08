@@ -1,4 +1,4 @@
-STATE.sound = new SoundService();
+﻿STATE.sound = new SoundService();
 
 // ==================== UTILITY FUNCTIONS ====================
 
@@ -39,7 +39,7 @@ function calculateTargetRPS(gameTimeSeconds) {
                     STATE.intervention.currentMilestoneIndex = i + 1;
                     // Add warning when milestone is reached
                     addInterventionWarning(
-                        `⚡ RPS SURGE! Traffic ×${multiplier.toFixed(1)}`,
+                        `ΓÜí RPS SURGE! Traffic ├ù${multiplier.toFixed(1)}`,
                         "danger",
                         5000
                     );
@@ -124,9 +124,9 @@ function showMaliciousWarning() {
     const warning = document.createElement("div");
     warning.id = "malicious-warning";
     warning.className =
-        "fixed top-24 left-1/2 transform -translate-x-1/2 text-center z-50 pointer-events-none";
+        "fixed top-1/3 left-1/2 transform -translate-x-1/2 text-center z-50 pointer-events-none";
     warning.innerHTML = `
-        <div class="text-red-500 text-2xl font-bold animate-pulse">⚠️ DDoS INCOMING ⚠️</div>
+        <div class="text-red-500 text-2xl font-bold animate-pulse">ΓÜá∩╕Å DDoS INCOMING ΓÜá∩╕Å</div>
         <div class="text-red-300 text-sm">Attack spike in 5 seconds!</div>
     `;
     document.body.appendChild(warning);
@@ -145,10 +145,6 @@ function startMaliciousSpike() {
 
     // Store normal distribution
     STATE.normalTrafficDist = { ...STATE.trafficDistribution };
-
-    // Massive RPS spike
-    if (!STATE.intervention.rpsMultiplier) STATE.intervention.rpsMultiplier = 1;
-    STATE.intervention.rpsMultiplier *= 15.0;
 
     const maliciousPct = CONFIG.survival.maliciousSpike.maliciousPercent;
     const remaining = 1 - maliciousPct;
@@ -170,7 +166,7 @@ function startMaliciousSpike() {
         "fixed top-4 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none";
     indicator.innerHTML = `
         <div class="bg-red-900/80 border-2 border-red-500 rounded-lg px-4 py-2 animate-pulse">
-            <span class="text-red-400 font-bold">🔥 DDoS ATTACK ACTIVE 🔥</span>
+            <span class="text-red-400 font-bold">≡ƒöÑ DDoS ATTACK ACTIVE ≡ƒöÑ</span>
         </div>
     `;
     document.body.appendChild(indicator);
@@ -183,9 +179,6 @@ function startMaliciousSpike() {
 
 function endMaliciousSpike() {
     STATE.maliciousSpikeActive = false;
-
-    // Reset RPS spike
-    if (STATE.intervention.rpsMultiplier) STATE.intervention.rpsMultiplier /= 15.0;
 
     // Restore normal distribution
     if (STATE.normalTrafficDist) {
@@ -221,7 +214,7 @@ function addInterventionWarning(message, type = "warning", duration = 4000) {
         } border-2 rounded-lg px-6 py-3 mb-2 shadow-lg`;
     warning.innerHTML = `
         <div class="flex items-center gap-3">
-            <span class="text-2xl">${type === "danger" ? "⚠️" : type === "info" ? "✅" : "📢"
+            <span class="text-2xl">${type === "danger" ? "ΓÜá∩╕Å" : type === "info" ? "Γ£à" : "≡ƒôó"
         }</span>
             <span class="font-bold text-lg">${message}</span>
         </div>
@@ -313,7 +306,7 @@ function startTrafficShift() {
     STATE.trafficDistribution = newDist;
 
     addInterventionWarning(
-        `📊 ${shift.name} - ${shift.type} traffic surging!`,
+        `≡ƒôè ${shift.name} - ${shift.type} traffic surging!`,
         "warning",
         5000
     );
@@ -377,7 +370,7 @@ function triggerRandomEvent() {
     switch (eventType) {
         case "COST_SPIKE":
             addInterventionWarning(
-                "💰 CLOUD COST SPIKE! Upkeep doubled for 30s",
+                "≡ƒÆ░ CLOUD COST SPIKE! Upkeep doubled for 30s",
                 "danger",
                 8000
             );
@@ -386,7 +379,7 @@ function triggerRandomEvent() {
 
         case "CAPACITY_DROP":
             addInterventionWarning(
-                "⚡ RESOURCE THROTTLING! Capacity reduced for 30s",
+                "ΓÜí RESOURCE THROTTLING! Capacity reduced for 30s",
                 "danger",
                 8000
             );
@@ -397,7 +390,7 @@ function triggerRandomEvent() {
 
         case "TRAFFIC_BURST":
             addInterventionWarning(
-                "🚀 TRAFFIC BURST! 3× requests for 30s",
+                "≡ƒÜÇ TRAFFIC BURST! 3├ù requests for 30s",
                 "warning",
                 8000
             );
@@ -413,7 +406,7 @@ function triggerRandomEvent() {
                 target.mesh.material.opacity = 0.3;
                 target.mesh.material.transparent = true;
                 addInterventionWarning(
-                    `🔧 ${target.type.toUpperCase()} OUTAGE! Service offline for 30s`,
+                    `≡ƒöº ${target.type.toUpperCase()} OUTAGE! Service offline for 30s`,
                     "danger",
                     8000
                 );
@@ -462,7 +455,7 @@ function endRandomEvent() {
     hideActiveEventBar();
 
     STATE.intervention.activeEvent = null;
-    addInterventionWarning("✅ Event ended", "info", 2000);
+    addInterventionWarning("Γ£à Event ended", "info", 2000);
     STATE.sound?.playSuccess();
 }
 
@@ -474,19 +467,19 @@ function showActiveEventBar(eventType) {
     if (!bar) return;
 
     const eventConfig = {
-        COST_SPIKE: { icon: "💰", text: "COST SPIKE ACTIVE", color: "bg-red-600" },
+        COST_SPIKE: { icon: "≡ƒÆ░", text: "COST SPIKE ACTIVE", color: "bg-red-600" },
         CAPACITY_DROP: {
-            icon: "⚡",
+            icon: "ΓÜí",
             text: "CAPACITY REDUCED",
             color: "bg-orange-600",
         },
         TRAFFIC_BURST: {
-            icon: "🚀",
+            icon: "≡ƒÜÇ",
             text: "TRAFFIC BURST",
             color: "bg-yellow-600",
         },
         SERVICE_OUTAGE: {
-            icon: "🔧",
+            icon: "≡ƒöº",
             text: "SERVICE OUTAGE",
             color: "bg-purple-600",
         },
@@ -588,7 +581,7 @@ function updateRepairCostTable() {
                     .toUpperCase()}</span>
                 <span class="text-center text-yellow-400">$${repairCost}</span>
                 <span class="text-right text-orange-400" title="$${s.config.cost
-                } × 10%">$${autoRepairCost}</span>
+                } ├ù 10%">$${autoRepairCost}</span>
             </div>
         `;
         })
@@ -1196,7 +1189,7 @@ function retryWithSameArchitecture() {
         }
     });
 
-    addInterventionWarning("🔄 Architecture restored! Try again!", "info", 3000);
+    addInterventionWarning("≡ƒöä Architecture restored! Try again!", "info", 3000);
     STATE.sound?.playPlace();
 }
 
@@ -1420,7 +1413,7 @@ window.togglePanel = (contentId, iconId) => {
     if (content) {
         content.classList.toggle('hidden');
         if (icon) {
-            icon.innerText = content.classList.contains('hidden') ? '▼' : '▲';
+            icon.innerText = content.classList.contains('hidden') ? 'Γû╝' : 'Γû▓';
         }
     }
 };
@@ -1673,7 +1666,7 @@ window.toggleMute = () => {
     const icon = document.getElementById("mute-icon");
     const menuIcon = document.getElementById("menu-mute-icon");
 
-    const iconText = muted ? "🔇" : "🔊";
+    const iconText = muted ? "≡ƒöç" : "≡ƒöè";
     if (icon) icon.innerText = iconText;
     if (menuIcon) menuIcon.innerText = iconText;
 
@@ -1697,20 +1690,7 @@ container.addEventListener("contextmenu", (e) => e.preventDefault());
 container.addEventListener("mousedown", (e) => {
     if (!STATE.isRunning) return;
 
-    // Right Click or Middle Click -> Pan (or Cancel)
-    if (e.button === 2) {
-        if (STATE.activeTool !== "select" || STATE.selectedNodeId) {
-            window.setTool("select");
-            STATE.selectedNodeId = null;
-            // Reset highlights
-            STATE.services.forEach((svc) => {
-                if (svc.mesh.material.emissive)
-                    svc.mesh.material.emissive.setHex(0x000000);
-            });
-            return;
-        }
-    }
-
+    // Right Click or Middle Click -> Pan
     if (e.button === 2 || e.button === 1) {
         isPanning = true;
         lastMouseX = e.clientX;
@@ -1731,7 +1711,7 @@ container.addEventListener("mousedown", (e) => {
                 // Repair check
                 if (svc && svc.health < 80 && CONFIG.survival.degradation?.enabled) {
                     if (svc.repair()) {
-                        addInterventionWarning(`🔧 ${svc.type.toUpperCase()} repaired!`, "info", 2000);
+                        addInterventionWarning(`≡ƒöº ${svc.type.toUpperCase()} repaired!`, "info", 2000);
                         return;
                     }
                 }
@@ -1908,7 +1888,7 @@ container.addEventListener("mousemove", (e) => {
                 e.clientX + 15,
                 e.clientY + 15,
                 `<strong class="text-orange-400">Remove Link</strong><br>
-                <span class="text-gray-300">${fromName}</span> → <span class="text-gray-300">${toName}</span><br>
+                <span class="text-gray-300">${fromName}</span> ΓåÆ <span class="text-gray-300">${toName}</span><br>
                 <span class="text-red-400 text-xs">Click to remove</span>`
             );
         } else {
@@ -2205,7 +2185,7 @@ function animate(time) {
         } else if (multiplier > 1.05) {
             upkeepDisplay.innerText = `-$${totalUpkeep.toFixed(
                 2
-            )}/s (×${multiplier.toFixed(2)})`;
+            )}/s (├ù${multiplier.toFixed(2)})`;
             upkeepDisplay.className = "text-red-400 font-mono";
         } else {
             upkeepDisplay.innerText = `-$${totalUpkeep.toFixed(2)}/s`;
@@ -2284,7 +2264,7 @@ function animate(time) {
             if (nextMilestone) {
                 const timeRemaining = Math.max(0, nextMilestone.time - currentTime);
 
-                rpsNextEl.textContent = `×${nextMilestone.multiplier.toFixed(1)}`;
+                rpsNextEl.textContent = `├ù${nextMilestone.multiplier.toFixed(1)}`;
                 rpsCountdownEl.textContent = formatTime(timeRemaining);
             } else {
                 // All milestones reached
@@ -2376,18 +2356,18 @@ function animate(time) {
             )}</div>
                 
                 <div class="bg-red-900/30 border border-red-500/50 rounded-lg p-3">
-                    <div class="text-red-400 font-bold text-sm uppercase mb-1">⚠️ Failure Reason</div>
+                    <div class="text-red-400 font-bold text-sm uppercase mb-1">ΓÜá∩╕Å Failure Reason</div>
                     <div class="text-white">${failureAnalysis.reason}</div>
                 </div>
                 
                 <div class="bg-blue-900/30 border border-blue-500/50 rounded-lg p-3">
-                    <div class="text-blue-400 font-bold text-sm uppercase mb-1">📊 Analysis</div>
+                    <div class="text-blue-400 font-bold text-sm uppercase mb-1">≡ƒôè Analysis</div>
                     <div class="text-gray-300 text-sm">${failureAnalysis.description
             }</div>
                 </div>
                 
                 <div class="bg-green-900/30 border border-green-500/50 rounded-lg p-3">
-                    <div class="text-green-400 font-bold text-sm uppercase mb-1">💡 Tips for Next Time</div>
+                    <div class="text-green-400 font-bold text-sm uppercase mb-1">≡ƒÆí Tips for Next Time</div>
                     <ul class="text-gray-300 text-sm list-disc list-inside space-y-1">
                         ${failureAnalysis.tips
                 .map((tip) => `<li>${tip}</li>`)
@@ -2481,7 +2461,7 @@ function analyzeFailure() {
 
     // Add general tips based on game state
     if (STATE.services.length < 3) {
-        result.tips.push("Build a complete pipeline: WAF → ALB → Compute → DB/S3");
+        result.tips.push("Build a complete pipeline: WAF ΓåÆ ALB ΓåÆ Compute ΓåÆ DB/S3");
     }
 
     if (!STATE.services.some((s) => s.type === "cache")) {
@@ -2539,7 +2519,7 @@ function purchaseExpansion() {
     const cost = Math.floor(CONFIG.expansion.baseCost * Math.pow(CONFIG.expansion.costMultiplier, STATE.expansions));
 
     if (STATE.money < cost) {
-        addInterventionWarning(`💸 Need $${cost} to expand!`, "warning", 2000);
+        addInterventionWarning(`≡ƒÆ╕ Need $${cost} to expand!`, "warning", 2000);
         flashMoney();
         return;
     }
@@ -2578,7 +2558,7 @@ function purchaseExpansion() {
         CONFIG.gridSize * CONFIG.tileSize
     );
 
-    addInterventionWarning(`🏗️ AREA EXPANDED!`, "info", 3000);
+    addInterventionWarning(`≡ƒÅù∩╕Å AREA EXPANDED!`, "info", 3000);
     STATE.sound.playPlace(); // Reuse place sound
 }
 

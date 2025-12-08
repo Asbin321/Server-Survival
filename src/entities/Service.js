@@ -61,6 +61,20 @@ class Service {
           ...materialProps,
         });
         break;
+      case "cdn":
+        geo = new THREE.CylinderGeometry(1.8, 1.8, 1, 16);
+        mat = new THREE.MeshStandardMaterial({
+          color: CONFIG.colors.cdn,
+          ...materialProps,
+        });
+        break;
+      case "firewall_adv":
+        geo = new THREE.BoxGeometry(3, 2.5, 1);
+        mat = new THREE.MeshStandardMaterial({
+          color: CONFIG.colors.firewall_adv,
+          ...materialProps,
+        });
+        break;
     }
 
     this.mesh = new THREE.Mesh(geo, mat);
@@ -72,6 +86,8 @@ class Service {
     else if (type === "s3") this.mesh.position.y += 0.75;
     else if (type === "cache") this.mesh.position.y += 0.75;
     else if (type === "sqs") this.mesh.position.y += 0.4;
+    else if (type === "cdn") this.mesh.position.y += 0.5;
+    else if (type === "firewall_adv") this.mesh.position.y += 1.25;
     else this.mesh.position.y += 1;
 
     this.mesh.castShadow = true;
